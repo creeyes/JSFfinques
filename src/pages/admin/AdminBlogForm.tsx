@@ -158,8 +158,8 @@ export default function AdminBlogForm() {
                 <option key={a.id} value={a.id}>{a.name} ({a.role})</option>
               ))}
             </select>
-            <Link to="/admin/autores/nuevo" className="text-xs text-amber-500 hover:underline mt-1 inline-block">
-              + Crear nuevo autor
+            <Link to="/admin/autores" target="_blank" className="text-xs text-amber-500 hover:underline mt-1 inline-block">
+              + Gestionar autores
             </Link>
           </Field>
 
