@@ -71,11 +71,22 @@ export const propertiesApi = {
     req(`/properties/${id}/`, { method: 'DELETE' }),
   reorder: (items: { id: number; order: number }[]): Promise<null> =>
     req('/properties/reorder/', { method: 'POST', body: JSON.stringify(items) }),
-  addImage: (id: number, file: File, order: number): Promise<ApiImage> => {
+  /** Sube UNA imagen a Cloudinary. El backend acepta el campo 'images' (puede repetirse). */
+  addImage: async (id: number, file: File, order: number): Promise<ApiImage> => {
     const fd = new FormData()
-    fd.append('image', file)
+    fd.append('images', file)          // campo correcto según el backend
     fd.append('order', String(order))
-    return authedFormData(`/properties/${id}/images/`, 'POST', fd)
+    const res = await authedFormData(`/properties/${id}/images/`, 'POST', fd)
+    // El backend devuelve { created: [ApiImage] }
+    return (res as { created: ApiImage[] }).created[0]
+  },
+  /** Sube VARIAS imágenes en una sola petición multipart. */
+  addImages: async (id: number, files: File[], startOrder: number): Promise<ApiImage[]> => {
+    const fd = new FormData()
+    files.forEach(f => fd.append('images', f))
+    fd.append('order', String(startOrder))
+    const res = await authedFormData(`/properties/${id}/images/`, 'POST', fd)
+    return (res as { created: ApiImage[] }).created
   },
   deleteImage: (propertyId: number, imageId: number): Promise<null> =>
     req(`/properties/${propertyId}/images/${imageId}/`, { method: 'DELETE' }),
