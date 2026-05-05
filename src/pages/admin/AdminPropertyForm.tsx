@@ -106,8 +106,9 @@ export default function AdminPropertyForm() {
         propertyId = created.id
       }
 
-      for (let i = 0; i < newFiles.length; i++) {
-        await propertiesApi.addImage(propertyId, newFiles[i], existingImages.length + i)
+      // Subir todas las imágenes nuevas en una sola petición (bulk)
+      if (newFiles.length > 0) {
+        await propertiesApi.addImages(propertyId, newFiles, existingImages.length)
       }
 
       navigate('/admin/propiedades')
