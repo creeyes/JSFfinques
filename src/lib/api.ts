@@ -116,18 +116,36 @@ export const blogApi = {
   list: (): Promise<{ results: ApiPost[] }> => req('/blog/'),
   get: (id: number): Promise<ApiPost> => req(`/blog/${id}/`),
   authors: (): Promise<{ results: ApiAuthor[] }> => req('/blog/authors/'),
-  create: (fd: FormData): Promise<ApiPost> =>
-    authedFormData('/blog/', 'POST', fd),
-  update: (id: number, fd: FormData): Promise<ApiPost> =>
-    authedFormData(`/blog/${id}/`, 'PATCH', fd),
+  create: (data: Record<string, unknown>): Promise<ApiPost> =>
+    req('/blog/', { method: 'POST', body: JSON.stringify(data) }),
+  update: (id: number, data: Record<string, unknown>): Promise<ApiPost> =>
+    req(`/blog/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }),
   delete: (id: number): Promise<null> =>
     req(`/blog/${id}/`, { method: 'DELETE' }),
-  createAuthor: (fd: FormData): Promise<ApiAuthor> =>
-    authedFormData('/blog/authors/', 'POST', fd),
-  updateAuthor: (id: number, fd: FormData): Promise<ApiAuthor> =>
-    authedFormData(`/blog/authors/${id}/`, 'PATCH', fd),
+  /** Sube (o reemplaza) la imagen principal del post. */
+  setImage: async (id: number, file: File): Promise<{ image_url: string }> => {
+    const fd = new FormData()
+    fd.append('image', file)
+    return authedFormData(`/blog/${id}/image/`, 'POST', fd)
+  },
+  /** Borra la imagen principal del post. */
+  deleteImage: (id: number): Promise<{ image_url: string }> =>
+    req(`/blog/${id}/image/`, { method: 'DELETE' }),
+  createAuthor: (data: Record<string, unknown>): Promise<ApiAuthor> =>
+    req('/blog/authors/', { method: 'POST', body: JSON.stringify(data) }),
+  updateAuthor: (id: number, data: Record<string, unknown>): Promise<ApiAuthor> =>
+    req(`/blog/authors/${id}/`, { method: 'PATCH', body: JSON.stringify(data) }),
   deleteAuthor: (id: number): Promise<null> =>
     req(`/blog/authors/${id}/`, { method: 'DELETE' }),
+  /** Sube (o reemplaza) el avatar del autor. */
+  setAuthorAvatar: async (id: number, file: File): Promise<ApiAuthor> => {
+    const fd = new FormData()
+    fd.append('avatar', file)
+    return authedFormData(`/blog/authors/${id}/avatar/`, 'POST', fd)
+  },
+  /** Borra el avatar del autor. */
+  deleteAuthorAvatar: (id: number): Promise<ApiAuthor> =>
+    req(`/blog/authors/${id}/avatar/`, { method: 'DELETE' }),
 }
 
 // ---------- Messages ----------

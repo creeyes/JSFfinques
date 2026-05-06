@@ -13,9 +13,11 @@ export default function AdminAuthors() {
 
   const [name, setName] = useState('')
   const [role, setRole] = useState('')
+  // Nuevo archivo seleccionado localmente (aún no subido)
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
   const [avatarPreview, setAvatarPreview] = useState<string>('')
-  const [removeAvatar, setRemoveAvatar] = useState(false)
+  // Si el usuario marcó el avatar existente para borrar
+  const [deleteExisting, setDeleteExisting] = useState(false)
   const [converting, setConverting] = useState(false)
 
   const [saving, setSaving] = useState(false)
@@ -27,7 +29,6 @@ export default function AdminAuthors() {
 
   useEffect(() => { load() }, [])
 
-  // Revoke preview URL when it changes to avoid memory leaks
   useEffect(() => {
     if (prevPreviewRef.current) URL.revokeObjectURL(prevPreviewRef.current)
     prevPreviewRef.current = avatarPreview
@@ -47,7 +48,7 @@ export default function AdminAuthors() {
     setRole('')
     setAvatarFile(null)
     setAvatarPreview('')
-    setRemoveAvatar(false)
+    setDeleteExisting(false)
     setFormError('')
   }
 
@@ -63,7 +64,7 @@ export default function AdminAuthors() {
     setRole(a.role)
     setAvatarFile(null)
     setAvatarPreview('')
-    setRemoveAvatar(false)
+    setDeleteExisting(false)
     setFormError('')
     setShowForm(true)
   }
@@ -84,7 +85,7 @@ export default function AdminAuthors() {
       const jpeg = await toJpeg(file)
       setAvatarFile(jpeg)
       setAvatarPreview(URL.createObjectURL(jpeg))
-      setRemoveAvatar(false)
+      setDeleteExisting(false)
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Error al procesar la imagen')
     } finally {
@@ -92,38 +93,51 @@ export default function AdminAuthors() {
     }
   }
 
-  function handleRemoveAvatar() {
+  function handleRemoveNew() {
     setAvatarFile(null)
     setAvatarPreview('')
-    setRemoveAvatar(true)
   }
 
-  // The avatar to show in the form: new preview > existing > nothing
-  const displayAvatar = removeAvatar
-    ? null
-    : avatarPreview || editingAuthor?.avatar_url || null
+  function handleDeleteExisting() {
+    setDeleteExisting(true)
+    setAvatarFile(null)
+    setAvatarPreview('')
+  }
+
+  // Avatar visible: nuevo preview > existente (si no marcado para borrar) > nada
+  const existingAvatarUrl = !deleteExisting ? (editingAuthor?.avatar_url ?? '') : ''
+  const displayAvatar = avatarPreview || existingAvatarUrl || null
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setFormError('')
     setSaving(true)
     try {
-      const fd = new FormData()
-      fd.append('name', name)
-      fd.append('role', role)
-      if (avatarFile) {
-        fd.append('avatar', avatarFile)
-      } else if (removeAvatar) {
-        fd.append('remove_avatar', 'true')
-      }
+      const data = { name, role }
 
       if (editingAuthor) {
-        const updated = await blogApi.updateAuthor(editingAuthor.id, fd)
-        setAuthors(prev => prev.map(a => a.id === updated.id ? updated : a))
+        const updated = await blogApi.updateAuthor(editingAuthor.id, data)
+        let final = updated
+
+        if (deleteExisting && !avatarFile) {
+          final = await blogApi.deleteAuthorAvatar(editingAuthor.id)
+        }
+        if (avatarFile) {
+          final = await blogApi.setAuthorAvatar(editingAuthor.id, avatarFile)
+        }
+
+        setAuthors(prev => prev.map(a => a.id === final.id ? final : a))
       } else {
-        const created = await blogApi.createAuthor(fd)
-        setAuthors(prev => [...prev, created])
+        const created = await blogApi.createAuthor(data)
+        let final = created
+
+        if (avatarFile) {
+          final = await blogApi.setAuthorAvatar(created.id, avatarFile)
+        }
+
+        setAuthors(prev => [...prev, final])
       }
+
       closeForm()
     } catch {
       setFormError(
@@ -194,13 +208,13 @@ export default function AdminAuthors() {
                     <User size={24} />
                   </div>
                 )}
-                {/* Remove button — only shown when there's an avatar */}
+                {/* Botón quitar: si hay preview nuevo, quita el nuevo; si hay existente, lo marca para borrar */}
                 {displayAvatar && (
                   <button
                     type="button"
-                    onClick={handleRemoveAvatar}
+                    onClick={avatarPreview ? handleRemoveNew : handleDeleteExisting}
                     className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition-colors"
-                    title="Eliminar foto"
+                    title={avatarPreview ? 'Quitar foto seleccionada' : 'Eliminar foto'}
                   >
                     <X size={11} />
                   </button>

@@ -2,7 +2,7 @@ import { useEffect, useState, ChangeEvent, FormEvent } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { blogApi, ApiAuthor } from '../../lib/api'
 import { toJpeg } from '../../lib/imageUtils'
-import { ArrowLeft, Upload, Loader2, X } from 'lucide-react'
+import { ArrowLeft, Upload, Loader2, Trash2 } from 'lucide-react'
 
 const EMPTY = {
   title: '', category: '', date: '', excerpt: '',
@@ -26,9 +26,13 @@ export default function AdminBlogForm() {
   const navigate = useNavigate()
 
   const [form, setForm] = useState(EMPTY)
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState('')
-  const [removeImage, setRemoveImage] = useState(false)
+  // Imagen existente en el servidor
+  const [existingImageUrl, setExistingImageUrl] = useState('')
+  // Nuevo archivo seleccionado localmente (aún no subido)
+  const [newImageFile, setNewImageFile] = useState<File | null>(null)
+  const [newImagePreview, setNewImagePreview] = useState('')
+  // Si el usuario marcó la imagen existente para borrar
+  const [deleteExisting, setDeleteExisting] = useState(false)
   const [authors, setAuthors] = useState<ApiAuthor[]>([])
   const [saving, setSaving] = useState(false)
   const [converting, setConverting] = useState(false)
@@ -39,20 +43,19 @@ export default function AdminBlogForm() {
 
     if (!isEdit) return
     blogApi.get(Number(id)).then(p => {
-      // Convert date from "15 Mar 2024" → "2024-03-15" for date input
       let dateVal = ''
       try { dateVal = new Date(p.date).toISOString().slice(0, 10) } catch { dateVal = '' }
       setForm({
         title: p.title, category: p.category, date: dateVal,
         excerpt: p.excerpt, content: p.content ?? '',
         published: p.published,
-        author: '',  // will be set after authors load
+        author: '',
       })
-      setImagePreview(p.image_url)
+      setExistingImageUrl(p.image_url)
     }).catch(() => navigate('/admin/blog'))
   }, [id, isEdit, navigate])
 
-  // Set author id once both post and authors are loaded
+  // Asignar autor una vez cargados ambos
   useEffect(() => {
     if (!isEdit || authors.length === 0) return
     blogApi.get(Number(id)).then(p => {
@@ -73,9 +76,9 @@ export default function AdminBlogForm() {
     setError('')
     try {
       const converted = await toJpeg(file)
-      setImageFile(converted)
-      setImagePreview(URL.createObjectURL(converted))
-      setRemoveImage(false)
+      setNewImageFile(converted)
+      setNewImagePreview(URL.createObjectURL(converted))
+      setDeleteExisting(false)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al procesar imagen')
     } finally {
@@ -83,27 +86,47 @@ export default function AdminBlogForm() {
     }
   }
 
+  function removeNewImage() {
+    setNewImageFile(null)
+    setNewImagePreview('')
+  }
+
+  function markDeleteExisting() {
+    setExistingImageUrl('')
+    setDeleteExisting(true)
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError('')
     setSaving(true)
     try {
-      const fd = new FormData()
-      fd.append('title', form.title)
-      fd.append('category', form.category)
-      fd.append('date', form.date)
-      fd.append('excerpt', form.excerpt)
-      fd.append('content', form.content)
-      fd.append('published', String(form.published))
-      if (form.author) fd.append('author', form.author)
-      if (imageFile) fd.append('image', imageFile)
-      else if (removeImage) fd.append('remove_image', 'true')
+      const payload: Record<string, unknown> = {
+        title: form.title,
+        category: form.category,
+        date: form.date,
+        excerpt: form.excerpt,
+        content: form.content,
+        published: form.published,
+      }
+      if (form.author) payload.author = Number(form.author)
+
+      let postId = Number(id)
 
       if (isEdit) {
-        await blogApi.update(Number(id), fd)
+        await blogApi.update(postId, payload)
+        // Borrar imagen existente si se marcó para eliminar
+        if (deleteExisting) await blogApi.deleteImage(postId)
       } else {
-        await blogApi.create(fd)
+        const created = await blogApi.create(payload)
+        postId = created.id
       }
+
+      // Subir nueva imagen si se seleccionó una
+      if (newImageFile) {
+        await blogApi.setImage(postId, newImageFile)
+      }
+
       navigate('/admin/blog')
     } catch {
       setError('Ha ocurrido un error al guardar.')
@@ -111,6 +134,10 @@ export default function AdminBlogForm() {
       setSaving(false)
     }
   }
+
+  // Imagen visible actualmente
+  const showExisting = existingImageUrl && !deleteExisting
+  const showNew = !!newImagePreview
 
   return (
     <div className="p-4 md:p-8 max-w-3xl">
@@ -164,24 +191,43 @@ export default function AdminBlogForm() {
           </Field>
 
           <Field label="Imagen principal">
-            {imagePreview && !removeImage && (
-              <div className="relative mb-2 w-full">
-                <img src={imagePreview} alt="" className="w-full h-36 object-cover rounded-lg border border-stone-200" />
-                <button
-                  type="button"
-                  onClick={() => { setImagePreview(''); setImageFile(null); setRemoveImage(true) }}
-                  className="absolute top-1.5 right-1.5 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
-                  title="Eliminar imagen"
-                >
-                  <X size={12} />
-                </button>
-              </div>
-            )}
-            <label className={`flex items-center gap-2 w-fit border border-dashed border-stone-300 rounded-lg px-4 py-2.5 text-sm transition-colors ${converting ? 'bg-primary-fixed text-primary cursor-wait' : 'cursor-pointer bg-stone-50 hover:bg-stone-100 text-stone-500'}`}>
-              {converting ? <Loader2 size={15} className="animate-spin" /> : <Upload size={15} />}
-              {converting ? 'Procesando...' : imagePreview && !removeImage ? 'Cambiar imagen' : 'Subir imagen'}
-              <input type="file" accept="image/*" onChange={handleImage} className="hidden" disabled={converting} />
-            </label>
+            <div className="space-y-3">
+              {/* Imagen guardada en el servidor */}
+              {showExisting && (
+                <div className="relative group w-full">
+                  <img src={existingImageUrl} alt="" className="w-full h-36 object-cover rounded-lg border border-stone-200" />
+                  <button
+                    type="button"
+                    onClick={markDeleteExisting}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Eliminar imagen"
+                  >
+                    <Trash2 size={11} />
+                  </button>
+                </div>
+              )}
+
+              {/* Nueva imagen seleccionada localmente */}
+              {showNew && (
+                <div className="relative group w-full">
+                  <img src={newImagePreview} alt="" className="w-full h-36 object-cover rounded-lg border-2 border-primary" />
+                  <button
+                    type="button"
+                    onClick={removeNewImage}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Quitar imagen seleccionada"
+                  >
+                    <Trash2 size={11} />
+                  </button>
+                </div>
+              )}
+
+              <label className={`flex items-center gap-2 w-fit border border-dashed border-stone-300 rounded-lg px-4 py-2.5 text-sm transition-colors ${converting ? 'bg-primary-fixed text-primary cursor-wait' : 'cursor-pointer bg-stone-50 hover:bg-stone-100 text-stone-500'}`}>
+                {converting ? <Loader2 size={15} className="animate-spin" /> : <Upload size={15} />}
+                {converting ? 'Procesando...' : (showExisting || showNew) ? 'Cambiar imagen' : 'Subir imagen'}
+                <input type="file" accept="image/*" onChange={handleImage} className="hidden" disabled={converting} />
+              </label>
+            </div>
           </Field>
 
           <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer select-none">
