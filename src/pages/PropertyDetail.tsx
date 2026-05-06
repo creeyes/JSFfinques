@@ -268,9 +268,10 @@ export default function PropertyDetail() {
           <div className="lg:col-span-8">
             <div className="mb-12">
               <h3 className="text-2xl font-bold text-primary mb-6">Descripción de la propiedad</h3>
-              <div className="prose prose-slate max-w-none text-secondary leading-relaxed text-lg">
-                <p>{property.description}</p>
-              </div>
+              <div
+                className="prose prose-slate max-w-none text-secondary leading-relaxed text-lg [&_ul]:list-disc [&_ul]:pl-5"
+                dangerouslySetInnerHTML={{ __html: property.description }}
+              />
             </div>
           </div>
 

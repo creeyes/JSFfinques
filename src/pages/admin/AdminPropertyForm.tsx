@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom'
 import { propertiesApi, ApiImage } from '../../lib/api'
 import { toJpeg } from '../../lib/imageUtils'
 import { ArrowLeft, Trash2, Upload, Loader2 } from 'lucide-react'
+import RichTextEditor from '../../components/RichTextEditor'
 
 const EMPTY = {
   title: '', type: 'Venta', location: '', price: '', priceUnit: '',
@@ -154,13 +155,15 @@ export default function AdminPropertyForm() {
             <Field label="Precio *">
               <input type="number" value={form.price} onChange={e => set('price', e.target.value)} className={INPUT} min="0" required />
             </Field>
-            <Field label="Unidad de precio">
-              <input type="text" value={form.priceUnit} onChange={e => set('priceUnit', e.target.value)} className={INPUT} placeholder="€/mes (solo alquiler)" />
-            </Field>
+            <div className="hidden">
+              <Field label="Unidad de precio">
+                <input type="text" value={form.priceUnit} onChange={e => set('priceUnit', e.target.value)} className={INPUT} placeholder="€/mes (solo alquiler)" />
+              </Field>
+            </div>
           </div>
 
           <Field label="Descripción *">
-            <textarea value={form.description} onChange={e => set('description', e.target.value)} className={`${INPUT} h-28 resize-none`} required />
+            <RichTextEditor value={form.description} onChange={html => set('description', html)} />
           </Field>
         </section>
 
