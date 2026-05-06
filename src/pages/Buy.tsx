@@ -61,42 +61,6 @@ export default function Buy() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 md:px-8 mb-20 md:mb-32">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:h-[700px]">
-          <div className="md:col-span-8 relative overflow-hidden rounded-lg group h-[400px] md:h-auto">
-            <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuA83lyHOND84_WaksSYA1kIYDL4xqhPhiTZO91XHSxLvhfVdFS-yKkHp8qaHr4KdDKeV2KhqZAq5tQfHu6edjagTqVvnvJXuqmAzqpJFAOK6Gift2_3cm4kGiVSWLvKTFodS7IIDTOlJHdYbTJ7H8L3opnNJnv10e8epckMwfchC-BxOXiR1ozaqIPOdDtOCkxBtKgqlJVp55E7vUZfWAXfxku_B1CutX5qV10dFm-8BF6HpgFZCVASJtwfevJtidReoO8e3GYIlek"
-              alt="Premium"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 text-white">
-              <span className="bg-primary px-3 py-1 text-[10px] md:text-xs font-bold uppercase rounded-sm mb-3 md:mb-4 inline-block">Novedad</span>
-              <h2 className="text-2xl md:text-3xl font-bold mb-1">Ático Premium en Centro Martorell</h2>
-              <p className="text-white/80 text-sm md:text-base">4 Hab. · 3 Baños · 185 m²</p>
-            </div>
-          </div>
-          <div className="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-6">
-            <div className="relative overflow-hidden rounded-lg group h-[200px] md:h-auto">
-              <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTQLzpm8z9wvs1lY28lfjYE1z_RqkMHWBax7lLDQvS7HtqH0lWNTEN1JKAAn3rcTIT6da-LB2VBwT0pZoDZ6ZHxm6EA5UJOPJqqR2B6SGxfRjdmwkArkqzvIwTW2NXvUX5pNwVciqlxqYwf6ACl8fpsxnUM_1-NwidJeLZUIEjV6r4FvfXCpR2Ujl70gN9MfFs1OMV0XAQL4dA6c0w3Bvn4Tfahmi9Q97qKmazLWCwkX1jyccg8zpkGxvpNND8QErY7G_Fe-9tX34"
-                alt="Kitchen"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            <div className="relative overflow-hidden rounded-lg group h-[200px] md:h-auto">
-              <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIJewWM_1z148wGU1ZwTnt56rqKg_K0ggqd9W1Sv69i9o5eih4m8MMl5Mim8RFQQ7FTjqYjuAy91l5Qfuhyaod2eK2Yu7RmXeeqeff5_OG8fkeyZFI-AJh7mogi9IvXOz7fK0IwA7HZK5KUS-Wj10GJx0D4M17wJmEApmdhDMzTxrTTnOwhxF-qtVxCqXojlvTkGb21uk8Iu3bu_kYByENx93vWxUffozWNG2EqSN76ggeG0hLa5RlQR0-Vt5ZbX3IoA07dQwn7pg"
-                alt="Living room"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className="bg-surface-container-low py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
