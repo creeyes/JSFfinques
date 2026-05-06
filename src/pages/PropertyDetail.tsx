@@ -247,7 +247,7 @@ export default function PropertyDetail() {
               </div>
             </div>
           )}
-          {property.garage && (
+          {property.garage != null && (
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
                 <Warehouse className="w-6 h-6" />

@@ -95,13 +95,13 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             <Bed className="w-5 h-5" />
             <span className="text-sm font-medium">{property.rooms}</span>
           </div>
-          {property.bathrooms && (
+          {property.bathrooms != null && (
             <div className="flex items-center gap-2">
               <Bath className="w-5 h-5" />
               <span className="text-sm font-medium">{property.bathrooms}</span>
             </div>
           )}
-          {property.garage && (
+          {property.garage != null && (
             <div className="flex items-center gap-2">
               <Warehouse className="w-5 h-5" />
               <span className="text-sm font-medium">{property.garage}</span>
