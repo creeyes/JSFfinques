@@ -42,7 +42,7 @@ export default function AdminLayout() {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-amber-500 text-white'
+                    ? 'bg-primary text-white'
                     : 'text-stone-300 hover:bg-stone-800 hover:text-white'
                 }`
               }
@@ -77,7 +77,7 @@ export default function AdminLayout() {
             to={to}
             className={({ isActive }) =>
               `flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${
-                isActive ? 'text-amber-400' : 'text-stone-400'
+                isActive ? 'text-primary-fixed' : 'text-stone-400'
               }`
             }
           >

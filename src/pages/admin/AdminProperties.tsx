@@ -58,7 +58,7 @@ function StaticRow({ p, onDelete, deleting }: {
             <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">⭐ Destacada</span>
           )}
           {p.exclusive && (
-            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">Exclusiva</span>
+            <span className="px-2 py-0.5 bg-primary-fixed text-primary rounded-full text-xs font-medium">Exclusiva</span>
           )}
           {p.rented && (
             <span className="px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-xs font-medium">Alquilada</span>
@@ -69,7 +69,7 @@ function StaticRow({ p, onDelete, deleting }: {
         <div className="flex items-center gap-2 justify-end">
           <Link
             to={`/admin/propiedades/${p.id}/editar`}
-            className="p-1.5 text-stone-400 hover:text-amber-500 hover:bg-amber-50 rounded-md transition-colors"
+            className="p-1.5 text-stone-400 hover:text-primary hover:bg-primary-fixed rounded-md transition-colors"
           >
             <Pencil size={15} />
           </Link>
@@ -154,7 +154,7 @@ function SortableRow({ p, onDelete, deleting }: {
             <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">⭐ Destacada</span>
           )}
           {p.exclusive && (
-            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">Exclusiva</span>
+            <span className="px-2 py-0.5 bg-primary-fixed text-primary rounded-full text-xs font-medium">Exclusiva</span>
           )}
           {p.rented && (
             <span className="px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-xs font-medium">Alquilada</span>
@@ -165,7 +165,7 @@ function SortableRow({ p, onDelete, deleting }: {
         <div className="flex items-center gap-2 justify-end">
           <Link
             to={`/admin/propiedades/${p.id}/editar`}
-            className="p-1.5 text-stone-400 hover:text-amber-500 hover:bg-amber-50 rounded-md transition-colors"
+            className="p-1.5 text-stone-400 hover:text-primary hover:bg-primary-fixed rounded-md transition-colors"
           >
             <Pencil size={15} />
           </Link>
@@ -261,7 +261,7 @@ export default function AdminProperties() {
   const tabClass = (t: Tab) =>
     `px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
       tab === t
-        ? 'border-amber-500 text-amber-600'
+        ? 'border-primary text-primary'
         : 'border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300'
     }`
 
@@ -272,12 +272,12 @@ export default function AdminProperties() {
           <h1 className="text-2xl font-bold text-stone-800">Propiedades</h1>
           <p className="text-stone-500 text-sm">
             {totalCount} propiedades en total
-            {saving && <span className="ml-2 text-amber-500 text-xs">Guardando orden...</span>}
+            {saving && <span className="ml-2 text-primary text-xs">Guardando orden...</span>}
           </p>
         </div>
         <Link
           to="/admin/propiedades/nueva"
-          className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-primary hover:bg-primary-container text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
         >
           <Plus size={16} /> Nueva propiedad
         </Link>
@@ -301,7 +301,7 @@ export default function AdminProperties() {
         allProperties.length === 0 ? (
           <div className="bg-white rounded-xl p-12 text-center shadow-sm">
             <p className="text-stone-400">No hay propiedades todavía.</p>
-            <Link to="/admin/propiedades/nueva" className="text-amber-500 hover:underline text-sm mt-2 inline-block">
+            <Link to="/admin/propiedades/nueva" className="text-primary hover:underline text-sm mt-2 inline-block">
               Añadir la primera propiedad
             </Link>
           </div>

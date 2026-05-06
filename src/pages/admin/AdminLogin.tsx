@@ -47,7 +47,7 @@ export default function AdminLogin() {
               type="text"
               value={username}
               onChange={e => setUsername(e.target.value)}
-              className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               autoFocus
               required
             />
@@ -58,7 +58,7 @@ export default function AdminLogin() {
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               required
             />
           </div>
@@ -70,7 +70,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors"
+            className="w-full bg-primary hover:bg-primary-container disabled:opacity-50 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors"
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </button>

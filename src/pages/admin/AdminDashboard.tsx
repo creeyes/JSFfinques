@@ -27,7 +27,7 @@ export default function AdminDashboard() {
   const cards = [
     { label: 'Propiedades en venta',   value: stats.venta,      icon: Building2,     color: 'bg-blue-50 text-blue-600',    to: '/admin/propiedades' },
     { label: 'Propiedades en alquiler', value: stats.alquiler,   icon: TrendingUp,    color: 'bg-green-50 text-green-600',  to: '/admin/propiedades' },
-    { label: 'Artículos publicados',    value: stats.posts,      icon: FileText,      color: 'bg-amber-50 text-amber-600',  to: '/admin/blog' },
+    { label: 'Artículos publicados',    value: stats.posts,      icon: FileText,      color: 'bg-primary-fixed text-primary',  to: '/admin/blog' },
     { label: 'Mensajes sin leer',       value: stats.unread,     icon: MessageSquare, color: 'bg-red-50 text-red-600',      to: '/admin/mensajes' },
   ]
 
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
           <Link
             key={to}
             to={to}
-            className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md border-2 border-dashed border-stone-200 hover:border-amber-400 flex items-center gap-3 text-stone-600 hover:text-amber-600 transition-all"
+            className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md border-2 border-dashed border-stone-200 hover:border-primary flex items-center gap-3 text-stone-600 hover:text-primary transition-all"
           >
             <Icon size={20} />
             <span className="font-medium">{label}</span>

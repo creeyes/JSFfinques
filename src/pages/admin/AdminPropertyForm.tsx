@@ -21,7 +21,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   )
 }
 
-const INPUT = 'w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400'
+const INPUT = 'w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary'
 
 export default function AdminPropertyForm() {
   const { id } = useParams<{ id: string }>()
@@ -183,15 +183,15 @@ export default function AdminPropertyForm() {
           </div>
           <div className="flex gap-6 flex-wrap">
             <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer select-none">
-              <input type="checkbox" checked={form.exclusive} onChange={e => set('exclusive', e.target.checked)} className="accent-amber-500 w-4 h-4" />
+              <input type="checkbox" checked={form.exclusive} onChange={e => set('exclusive', e.target.checked)} className="accent-primary w-4 h-4" />
               Exclusiva
             </label>
             <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer select-none">
-              <input type="checkbox" checked={form.rented} onChange={e => set('rented', e.target.checked)} className="accent-amber-500 w-4 h-4" />
+              <input type="checkbox" checked={form.rented} onChange={e => set('rented', e.target.checked)} className="accent-primary w-4 h-4" />
               Alquilada
             </label>
             <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer select-none">
-              <input type="checkbox" checked={form.featured} onChange={e => set('featured', e.target.checked)} className="accent-amber-500 w-4 h-4" />
+              <input type="checkbox" checked={form.featured} onChange={e => set('featured', e.target.checked)} className="accent-primary w-4 h-4" />
               ⭐ Destacada (aparece en el inicio)
             </label>
           </div>
@@ -224,7 +224,7 @@ export default function AdminPropertyForm() {
             <div className="flex flex-wrap gap-3">
               {newFiles.map((f, i) => (
                 <div key={i} className="relative group">
-                  <img src={URL.createObjectURL(f)} alt="" className="w-24 object-cover rounded-lg border-2 border-amber-300" style={{ height: '72px' }} />
+                  <img src={URL.createObjectURL(f)} alt="" className="w-24 object-cover rounded-lg border-2 border-primary" style={{ height: '72px' }} />
                   <button
                     type="button"
                     onClick={() => removeNew(i)}
@@ -237,7 +237,7 @@ export default function AdminPropertyForm() {
             </div>
           )}
 
-          <label className={`flex items-center gap-2 w-fit border border-dashed border-stone-300 rounded-lg px-4 py-2.5 text-sm transition-colors ${converting ? 'bg-amber-50 text-amber-600 cursor-wait' : 'cursor-pointer bg-stone-50 hover:bg-stone-100 text-stone-500'}`}>
+          <label className={`flex items-center gap-2 w-fit border border-dashed border-stone-300 rounded-lg px-4 py-2.5 text-sm transition-colors ${converting ? 'bg-primary-fixed text-primary cursor-wait' : 'cursor-pointer bg-stone-50 hover:bg-stone-100 text-stone-500'}`}>
             {converting ? <Loader2 size={15} className="animate-spin" /> : <Upload size={15} />}
             {converting ? 'Procesando...' : 'Añadir imágenes'}
             <input type="file" accept="image/*" multiple onChange={handleFiles} className="hidden" disabled={converting} />
@@ -250,7 +250,7 @@ export default function AdminPropertyForm() {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors"
+            className="flex items-center gap-2 bg-primary hover:bg-primary-container disabled:opacity-50 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors"
           >
             {saving && <Loader2 size={15} className="animate-spin" />}
             {saving ? 'Guardando...' : isEdit ? 'Guardar cambios' : 'Crear propiedad'}

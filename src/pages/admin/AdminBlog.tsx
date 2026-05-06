@@ -39,7 +39,7 @@ export default function AdminBlog() {
         </div>
         <Link
           to="/admin/blog/nuevo"
-          className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-primary hover:bg-primary-container text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
         >
           <Plus size={16} /> Nuevo artículo
         </Link>
@@ -50,7 +50,7 @@ export default function AdminBlog() {
       ) : posts.length === 0 ? (
         <div className="bg-white rounded-xl p-12 text-center shadow-sm">
           <p className="text-stone-400">No hay artículos todavía.</p>
-          <Link to="/admin/blog/nuevo" className="text-amber-500 hover:underline text-sm mt-2 inline-block">
+          <Link to="/admin/blog/nuevo" className="text-primary hover:underline text-sm mt-2 inline-block">
             Crear el primer artículo
           </Link>
         </div>
@@ -105,7 +105,7 @@ export default function AdminBlog() {
                     <div className="flex items-center gap-2 justify-end">
                       <Link
                         to={`/admin/blog/${post.id}/editar`}
-                        className="p-1.5 text-stone-400 hover:text-amber-500 hover:bg-amber-50 rounded-md transition-colors"
+                        className="p-1.5 text-stone-400 hover:text-primary hover:bg-primary-fixed rounded-md transition-colors"
                       >
                         <Pencil size={15} />
                       </Link>

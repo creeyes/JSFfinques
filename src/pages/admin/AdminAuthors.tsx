@@ -3,7 +3,7 @@ import { blogApi, ApiAuthor } from '../../lib/api'
 import { toJpeg } from '../../lib/imageUtils'
 import { Plus, Trash2, Loader2, User, Pencil, X, Upload } from 'lucide-react'
 
-const INPUT = 'w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400'
+const INPUT = 'w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary'
 
 export default function AdminAuthors() {
   const [authors, setAuthors] = useState<ApiAuthor[]>([])
@@ -158,7 +158,7 @@ export default function AdminAuthors() {
         </div>
         <button
           onClick={openCreate}
-          className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-primary hover:bg-primary-container text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
         >
           <Plus size={16} /> Nuevo autor
         </button>
@@ -208,7 +208,7 @@ export default function AdminAuthors() {
               </div>
 
               {/* Upload button */}
-              <label className={`flex items-center gap-2 border border-dashed border-stone-300 rounded-lg px-4 py-2 text-sm transition-colors ${converting ? 'bg-amber-50 text-amber-600 cursor-wait' : 'cursor-pointer bg-stone-50 hover:bg-stone-100 text-stone-500'}`}>
+              <label className={`flex items-center gap-2 border border-dashed border-stone-300 rounded-lg px-4 py-2 text-sm transition-colors ${converting ? 'bg-primary-fixed text-primary cursor-wait' : 'cursor-pointer bg-stone-50 hover:bg-stone-100 text-stone-500'}`}>
                 {converting ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
                 {converting ? 'Procesando...' : displayAvatar ? 'Cambiar foto' : 'Subir foto'}
                 <input
@@ -226,7 +226,7 @@ export default function AdminAuthors() {
           {formError && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-2">{formError}</p>}
 
           <div className="flex gap-3">
-            <button type="submit" disabled={saving} className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold px-5 py-2 rounded-lg text-sm transition-colors">
+            <button type="submit" disabled={saving} className="flex items-center gap-2 bg-primary hover:bg-primary-container disabled:opacity-50 text-white font-semibold px-5 py-2 rounded-lg text-sm transition-colors">
               {saving && <Loader2 size={14} className="animate-spin" />}
               {editingAuthor ? 'Guardar cambios' : 'Crear autor'}
             </button>
@@ -260,7 +260,7 @@ export default function AdminAuthors() {
                   </div>
                   <button
                     onClick={() => openEdit(a)}
-                    className="p-1.5 text-stone-300 hover:text-amber-500 hover:bg-amber-50 rounded-md transition-colors"
+                    className="p-1.5 text-stone-300 hover:text-primary hover:bg-primary-fixed rounded-md transition-colors"
                   >
                     <Pencil size={15} />
                   </button>

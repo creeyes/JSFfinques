@@ -67,20 +67,20 @@ export default function AdminMessages() {
       ) : (
         <div className="space-y-2">
           {messages.map(msg => (
-            <div key={msg.id} className={`bg-white rounded-xl shadow-sm overflow-hidden border-l-4 transition-colors ${msg.read ? 'border-stone-200' : 'border-amber-400'}`}>
+            <div key={msg.id} className={`bg-white rounded-xl shadow-sm overflow-hidden border-l-4 transition-colors ${msg.read ? 'border-stone-200' : 'border-primary'}`}>
               <div className="relative flex items-stretch">
                 <button
                   onClick={() => toggle(msg.id, msg)}
                   className="flex-1 text-left px-5 py-4 flex items-start gap-4 hover:bg-stone-50 transition-colors"
                 >
-                  <div className={`mt-0.5 shrink-0 ${msg.read ? 'text-stone-300' : 'text-amber-500'}`}>
+                  <div className={`mt-0.5 shrink-0 ${msg.read ? 'text-stone-300' : 'text-primary'}`}>
                     {msg.read ? <MailOpen size={18} /> : <Mail size={18} />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="font-semibold text-stone-800 text-sm">{msg.name}</span>
                       {!msg.read && (
-                        <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded text-xs font-medium">Nuevo</span>
+                        <span className="px-1.5 py-0.5 bg-primary-fixed text-primary rounded text-xs font-medium">Nuevo</span>
                       )}
                       <span className="text-stone-400 text-xs ml-auto">
                         {new Date(msg.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -106,11 +106,11 @@ export default function AdminMessages() {
                     <p className="text-stone-700 text-sm whitespace-pre-wrap">{msg.message}</p>
                   </div>
                   <div className="flex gap-4 mt-3 text-xs text-stone-400">
-                    <a href={`mailto:${msg.email}`} className="flex items-center gap-1 hover:text-amber-500 transition-colors">
+                    <a href={`mailto:${msg.email}`} className="flex items-center gap-1 hover:text-primary transition-colors">
                       <Mail size={12} /> {msg.email}
                     </a>
                     {msg.phone && (
-                      <a href={`tel:${msg.phone}`} className="flex items-center gap-1 hover:text-amber-500 transition-colors">
+                      <a href={`tel:${msg.phone}`} className="flex items-center gap-1 hover:text-primary transition-colors">
                         <Phone size={12} /> {msg.phone}
                       </a>
                     )}

@@ -9,7 +9,7 @@ const EMPTY = {
   content: '', published: true, author: '',
 }
 
-const INPUT = 'w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400'
+const INPUT = 'w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary'
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -158,7 +158,7 @@ export default function AdminBlogForm() {
                 <option key={a.id} value={a.id}>{a.name} ({a.role})</option>
               ))}
             </select>
-            <Link to="/admin/autores" target="_blank" className="text-xs text-amber-500 hover:underline mt-1 inline-block">
+            <Link to="/admin/autores" target="_blank" className="text-xs text-primary hover:underline mt-1 inline-block">
               + Gestionar autores
             </Link>
           </Field>
@@ -177,7 +177,7 @@ export default function AdminBlogForm() {
                 </button>
               </div>
             )}
-            <label className={`flex items-center gap-2 w-fit border border-dashed border-stone-300 rounded-lg px-4 py-2.5 text-sm transition-colors ${converting ? 'bg-amber-50 text-amber-600 cursor-wait' : 'cursor-pointer bg-stone-50 hover:bg-stone-100 text-stone-500'}`}>
+            <label className={`flex items-center gap-2 w-fit border border-dashed border-stone-300 rounded-lg px-4 py-2.5 text-sm transition-colors ${converting ? 'bg-primary-fixed text-primary cursor-wait' : 'cursor-pointer bg-stone-50 hover:bg-stone-100 text-stone-500'}`}>
               {converting ? <Loader2 size={15} className="animate-spin" /> : <Upload size={15} />}
               {converting ? 'Procesando...' : imagePreview && !removeImage ? 'Cambiar imagen' : 'Subir imagen'}
               <input type="file" accept="image/*" onChange={handleImage} className="hidden" disabled={converting} />
@@ -185,7 +185,7 @@ export default function AdminBlogForm() {
           </Field>
 
           <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer select-none">
-            <input type="checkbox" checked={form.published} onChange={e => set('published', e.target.checked)} className="accent-amber-500 w-4 h-4" />
+            <input type="checkbox" checked={form.published} onChange={e => set('published', e.target.checked)} className="accent-primary w-4 h-4" />
             Publicado (visible en el sitio web)
           </label>
         </section>
@@ -196,7 +196,7 @@ export default function AdminBlogForm() {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors"
+            className="flex items-center gap-2 bg-primary hover:bg-primary-container disabled:opacity-50 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors"
           >
             {saving && <Loader2 size={15} className="animate-spin" />}
             {saving ? 'Guardando...' : isEdit ? 'Guardar cambios' : 'Publicar artículo'}
